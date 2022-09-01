@@ -1,5 +1,4 @@
 import os
-from keep_alive import keep_alive
 from discord.ext import commands, tasks
 import motor.motor_asyncio
 from util.setup import load_text, load_data, mod_data, get_files
@@ -38,7 +37,5 @@ if __name__ == '__main__':  # Ensures this is the file being ran
 bot.t = load_text()
 bot.d = load_data()
 bot.hdb = bot.get_cog("Database")
-print(bot.hdb)
-keep_alive()  # Starts a webserver to be pinged.
 token = os.environ.get("DISCORD_BOT_SECRET") 
 bot.run(token)  # Starts the bot
