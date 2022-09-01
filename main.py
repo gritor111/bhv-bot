@@ -39,3 +39,4 @@ bot.d = load_data()
 bot.hdb = bot.get_cog("Database")
 token = os.environ.get("DISCORD_BOT_SECRET") 
 bot.run(token)  # Starts the bot
+# test commit
