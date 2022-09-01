@@ -69,5 +69,5 @@ class DevCommands(commands.Cog, name='Developer Commands'):
 		await ctx.send(base_string)
 
 
-def setup(bot):
-	bot.add_cog(DevCommands(bot))
+async def setup(bot):
+	await bot.add_cog(DevCommands(bot))

@@ -1,0 +1,9 @@
+python
+Flask
+classy-json
+motor
+pytz
+idna
+discord.py
+pymongo
+pymongo[srv]

@@ -24,5 +24,5 @@ class Database(commands.Cog, name="Database"):
         print(time)
         return await self.curser_to_list(self.bot.db.count.find({ "time": { "$gte": time }, "uid": str(uid) }))
         
-def setup(bot):
-    bot.add_cog(Database(bot))
+async def setup(bot):
+    await bot.add_cog(Database(bot))

@@ -77,5 +77,5 @@ class Events(commands.Cog, name='Events'):
             await member.add_roles(*self.bot.d.verify_roles)
 
         
-def setup(bot):
-    bot.add_cog(Events(bot))
+async def setup(bot):
+    await bot.add_cog(Events(bot))

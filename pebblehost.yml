@@ -10,6 +10,6 @@ proxy-port=
 #
 #Please configure these options from within your panel under Tools > Git Management
 # Git URL
-git-url=https://github.com/gritor111/bhv-bot
+git-url=
 # Git Branch
-git-branch=main
+git-branch=

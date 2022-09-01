@@ -7,16 +7,19 @@ import itertools
 
 bot = commands.Bot(
     command_prefix="!",  # Change to desired prefix
-    case_insensitive=True # Commands aren't case-sensitive
+    case_insensitive=True, # Commands aren't case-sensitive
+    intents=discord.Intents.all()
 )
 STATUS = itertools.cycle(["a", "b"])
 CONNECT_STRING = os.environ.get("MONGO_SECRET")
-mongo_client = motor.motor_asyncio.AsyncIOMotorClient(CONNECT_STRING)
+mongo_client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://gritor111:lironfrid19@cluster0.smx4w.mongodb.net/?retryWrites=true&w=majority")
 bot.db = mongo_client.bhv
 bot.author_id = 656373241144934420  # Change to your discord id!!!
-
 @bot.event 
 async def on_ready():  # When the bot is ready
+    for extension in files:
+        print(extension)
+        await bot.load_extension(extension)  # Loades every extension.
     mod_data(bot)
     change_status.start()
     print("I'm in")
@@ -29,14 +32,9 @@ async def change_status():
 
 files = [file.replace("/", ".")[:-3] for file in get_files("cogs", [])]
 
-if __name__ == '__main__':  # Ensures this is the file being ran
-    for extension in files:
-        print(extension)
-        bot.load_extension(extension)  # Loades every extension.
-
 bot.t = load_text()
 bot.d = load_data()
 bot.hdb = bot.get_cog("Database")
-token = os.environ.get("DISCORD_BOT_SECRET") 
+token = "MTAwMDMzODU5NjAzNDc3NzA5OQ.GfG0Jz.ZB8RR6LHmt7mjYTF24_wGVHX0KiCuMv9umZdVQ"
 bot.run(token)  # Starts the bot
 # test commit
