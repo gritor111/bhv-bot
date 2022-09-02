@@ -20,5 +20,5 @@ class Stats(commands.Cog, name='Stats'):
         await ctx.channel.send("score: " + str(score/3))  # avg
             
     
-def setup(bot):
-    bot.add_cog(Stats(bot))
+async def setup(bot):
+    await bot.add_cog(Stats(bot))
