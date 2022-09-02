@@ -37,4 +37,3 @@ bot.d = load_data()
 bot.hdb = bot.get_cog("Database") # TODO this doesnt work in v2
 token = "test"
 bot.run(token)  # Starts the bot
-# test commit
