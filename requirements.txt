@@ -7,3 +7,4 @@ idna
 discord.py
 pymongo
 pymongo[srv]
+python-dateutil

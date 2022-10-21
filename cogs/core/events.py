@@ -3,6 +3,16 @@ from discord.ext import commands
 import asyncio
 import itertools
 
+BAD_ARG_ERRORS = (
+    commands.BadArgument,
+    commands.errors.UnexpectedQuoteError,
+    commands.errors.ExpectedClosingQuoteError,
+    commands.errors.BadUnionArgument,
+)
+
+IGNORED_ERRORS = (commands.CommandNotFound, commands.NotOwner)
+
+
 class Events(commands.Cog, name='Events'):
 
     def __init__(self, bot):
@@ -24,8 +34,7 @@ class Events(commands.Cog, name='Events'):
                 await self.bot.hdb.add_count(ctx.author.id, "hunt")
                 
                 await asyncio.sleep(15)
-                await ctx.channel.send("time for hunting")
-                
+
                 self.hunt_cache.remove(ctx.author.id)
                 
                 
@@ -37,8 +46,7 @@ class Events(commands.Cog, name='Events'):
                 await self.bot.hdb.add_count(ctx.author.id, "battle")
 
                 await asyncio.sleep(15)
-                await ctx.channel.send("time for battling")
-                
+
                 self.battle_cache.remove(ctx.author.id)
                 
 
@@ -47,11 +55,9 @@ class Events(commands.Cog, name='Events'):
             for name in self.bot.t.command_names:
                 
                 if ctx.content.startswith(f"owo{name}"):
-                    print(f"recognized owo{name}")
                     return
 
                 if ctx.content.startswith(f"uwu{name}"):
-                    print(f"recognized uwu{name}")
                     return
                     
             if ctx.author.id not in self.owo_cache:
@@ -60,8 +66,7 @@ class Events(commands.Cog, name='Events'):
                 await self.bot.hdb.add_count(ctx.author.id, "owo")
 
                 await asyncio.sleep(10)
-                await ctx.channel.send("time for o-wo")
-                
+
                 self.owo_cache.remove(ctx.author.id)
 
         
@@ -76,6 +81,28 @@ class Events(commands.Cog, name='Events'):
             member = self.bot.d.bhv.get_member(payload.user_id)
             await member.add_roles(*self.bot.d.verify_roles)
 
-        
+    async def handle_command_cooldown(self, ctx, remaining):
+        await ctx.channel.send(f"This command is on cooldown, please wait another **{round(remaining, 2)}s** to use it again!")
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, e):
+        print(e)
+        if isinstance(e, commands.CommandOnCooldown):
+            await self.handle_command_cooldown(ctx, e.retry_after)
+
+        elif isinstance(e, commands.MissingRequiredArgument):
+            await ctx.channel.send(self.bot.t.errors.missing_arg.format(self.bot.t.command_help_str[ctx.command]["syntax"]))
+
+        elif isinstance(e, BAD_ARG_ERRORS):
+            await ctx.channel.send(self.bot.t.errors.bad_arg)
+
+        elif isinstance(e, IGNORED_ERRORS):
+            return
+
+        else:
+            await ctx.channel.send(f"Oops, it seems that an error occurred.")
+            raise e
+
+
 async def setup(bot):
     await bot.add_cog(Events(bot))

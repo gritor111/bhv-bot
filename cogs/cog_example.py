@@ -23,12 +23,12 @@ class DevCommands(commands.Cog, name='Developer Commands'):
 		extensions = self.bot.extensions  # A list of the bot's cogs/extensions.
 		if cog == 'all':  # Lets you reload all cogs at once
 			for extension in extensions:
-				self.bot.unload_extension(cog)
-				self.bot.load_extension(cog)
+				await self.bot.unload_extension(cog)
+				await self.bot.load_extension(cog)
 			await ctx.send('Done')
 		if cog in extensions:
-			self.bot.unload_extension(cog)  # Unloads the cog
-			self.bot.load_extension(cog)  # Loads the cog
+			await self.bot.unload_extension(cog)  # Unloads the cog
+			await self.bot.load_extension(cog)  # Loads the cog
 			await ctx.send('Done')  # Sends a message where content='Done'
 		else:
 			await ctx.send('Unknown Cog')  # If the cog isn't found/loaded.

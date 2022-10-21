@@ -3,6 +3,7 @@ import os
 import discord
 import datetime
 import pytz
+from dateutil.relativedelta import relativedelta
 
 def load_text():
     text = {}
@@ -19,12 +20,14 @@ def load_data() -> cj.ClassyDict:
     
     return data
 
+
 def mod_data(bot):
     
     guild = bot.get_guild(bot.d.bhv)
     
     bot.d.verify_roles = [guild.get_role(role_id) for role_id in bot.d.verify_roles]
     bot.d.bhv = guild
+
 
 def get_files(path, files):
     
@@ -43,21 +46,22 @@ def get_files(path, files):
 
     return all_files
 
+
 def get_time(time):
-    
-    today = datetime.date.today()
+
     tz = pytz.timezone("America/Los_angeles")
-    
+    midnight = datetime.datetime.combine(datetime.date.today(), datetime.time())
+
     if time in ["m", "month", "monthly"]:
-        return tz.localize(today - datetime.timedelta(months=1))
+        return [tz.localize(midnight - relativedelta(months=1)), "Monthly"]
         
     elif time in ["w", "weekly", "week"]:
-        return tz.localize(today - datetime.timedelta(weeks=1))
+        return [tz.localize(midnight - relativedelta(weeks=1)), "Weekly"]
         
     elif time in ["d", "daily", "day"]:
-        return tz.localize(today)
+        return [tz.localize(midnight), "Daily"]
 
-    elif time == "all_time":
-        return tz.localize(datetime.datetime(1969, 1, 1))
+    elif time in ["All time", "at"]:
+        return [tz.localize(datetime.datetime(1969, 1, 1)), "All time"]
         
    
